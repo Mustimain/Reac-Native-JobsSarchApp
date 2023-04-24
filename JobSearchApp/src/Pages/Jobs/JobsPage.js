@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useRef, useState} from 'react';
 import {SafeAreaView, Text, View, FlatList} from 'react-native';
 import styles from './JobsPage.style';
 import JobsCard from '../../Components/JobsCard';
@@ -6,22 +6,25 @@ import {useEffect} from 'react';
 import useFetch from '../../Hooks/useFetch/useFetch';
 
 const JobsPage = ({navigation}) => {
-  const [loading, setLoading] = React.useState(true);
+  const JOB_API_URL = 'https://www.themuse.com/api/public/jobs?page';
+  const {data, dataLoading, dataError} = useFetch(`${JOB_API_URL}=0`);
+  const flatListRef = useRef(null);
 
-  const {data, dataLoading, dataError} = useFetch(
-    'https://www.themuse.com/api/public/jobs?page=1&descending=true',
+  const handleJobDetail = item => {
+    navigation.navigate('JobDetail', {item});
+  };
+
+  const renderJobCards = ({item}) => (
+    <JobsCard job={item} handlePressDetail={() => handleJobDetail(item)} />
   );
-
-  useEffect(() => {
-    console.log(data.results);
-  }, [data]);
 
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <View style={styles.container}>
         <FlatList
+          ref={flatListRef}
           data={data.results}
-          renderItem={({item}) => <JobsCard job={item} />}
+          renderItem={renderJobCards}
         />
       </View>
     </SafeAreaView>

@@ -3,6 +3,7 @@ import {} from 'react-native';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import JobsPage from '../Jobs';
+import JobDetail from '../JobDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,21 @@ const HomeStack = () => {
         }}
         name="Jobs"
         component={JobsPage}
+      />
+      <Stack.Screen
+        options={{
+          title: 'Job Detail',
+          headerStyle: {
+            backgroundColor: 'white',
+          },
+          headerTintColor: 'red',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 22,
+          },
+        }}
+        name="JobDetail"
+        component={JobDetail}
       />
     </Stack.Navigator>
   );
